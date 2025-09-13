@@ -1,0 +1,56 @@
+#.github/workflows/add-to-Project-board.yml
+name: Auto-add issues to Project Board
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  add_to_project:
+    runs-on: ubuntu-latest
+    steps:
+    # Step 1: Add issue to Project V2
+      - name: Add issue to Mission V1 board
+        id: add_project
+        uses: actions/add-to-project@v0.5.0
+        with:
+          project-url: "https://github.com/orgs/farnodes/projects/32"
+          github-token: "${{ secrets.PROJECT_PAT }}"
+
+    # Step 2: Set Status = Backlog
+      - name: Set default Status
+        if: success()
+        run: |
+          ITEM_ID="${{ steps.add_project.outputs.itemId }}"
+          echo "ITEM_ID=$ITEM_ID"
+
+          RESPONSE=$(curl -s -X POST https://api.github.com/graphql \
+            -H "Authorization: bearer ${{ secrets.PROJECT_PAT }}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg projectId "PVT_kwDOCgBq7s4BCv0U" \
+              --arg itemId "$ITEM_ID" \
+              --arg fieldId "PVTSSF_lADOCgBq7s4BCv0Uzg03jqM" \
+              --arg optionId "08afe404" \
+              '{ query: "mutation($projectId:ID!,$itemId:ID!,$fieldId:ID!,$optionId:String!){ updateProjectV2ItemFieldValue(input:{ projectId:$projectId, itemId:$itemId, fieldId:$fieldId, value:{ singleSelectOptionId:$optionId }}) { projectV2Item { id } } }", variables:{ projectId:$projectId, itemId:$itemId, fieldId:$fieldId, optionId:$optionId } }')")
+
+          echo "GraphQL Response (Status): $RESPONSE"
+
+    # Step 3: Set Priority = Medium
+      - name: Set default Priority
+        if: success()
+        run: |
+          ITEM_ID="${{ steps.add_project.outputs.itemId }}"
+          echo "ITEM_ID=$ITEM_ID"
+
+          RESPONSE=$(curl -s -X POST https://api.github.com/graphql \
+            -H "Authorization: bearer ${{ secrets.PROJECT_PAT }}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n \
+              --arg projectId "PVT_kwDOCgBq7s4BCv0U" \
+              --arg itemId "$ITEM_ID" \
+              --arg fieldId "PVTSSF_lADOCgBq7s4BCv0Uzg03j7k" \
+              --arg optionId "da944a9c" \
+              '{ query: "mutation($projectId:ID!,$itemId:ID!,$fieldId:ID!,$optionId:String!){ updateProjectV2ItemFieldValue(input:{ projectId:$projectId, itemId:$itemId, fieldId:$fieldId, value:{ singleSelectOptionId:$optionId }}) { projectV2Item { id } } }", variables:{ projectId:$projectId, itemId:$itemId, fieldId:$fieldId, optionId:$optionId } }')")
+
+          echo "GraphQL Response (Priority): $RESPONSE"
