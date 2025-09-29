@@ -11,13 +11,10 @@ wc -l < file.txt
 ```
 🔹 2. Output Redirection Overwrite (>)
 ➝ Sends output to a file, overwriting its previous content.
-
-Examples:
 ```bash
 ls > files.txt
 ```
 ➝ Saves directory listing into files.txt (overwrites file).
-
 ```bash
 echo "Hello Rahul" > hello.txt
 ```
@@ -26,13 +23,11 @@ echo "Hello Rahul" > hello.txt
 ```bash
 date > now.txt
 ```
-
 ➝ Saves the current date/time into now.txt.
 
 🔹 3. Output Redirection Append (>>)
 
 ➝ Sends output to a file but appends it instead of overwriting.
-Examples:
 
 ```bash
 echo "Line 1" >> myfile.txt
@@ -47,27 +42,26 @@ ls >> files.txt
 ```bash
 date >> files.txt
 ```
-
-🔹 4. Error Redirection (2> / 2>>)
-
 # Try to list a file that doesn't exist
 
 ```bash
 ls file1.txt file2.txt 2> error.txt
 ```
-
 ls: cannot access 'file2.txt': No such file or directory
 
-Example 2: Append errors to a file
-
 # Try again and append error
+
+```bash
 ls file3.txt 2>> error.txt
+```
 
 Now error.txt will have old + new errors.
 
 Example 3: Redirect both output & error
-ls existing.txt nonexistent.txt > output.txt 2> error.txt
 
+```bash
+ls existing.txt nonexistent.txt > output.txt 2> error.txt
+```
 ```bash
 ls existing.txt nonexistent.txt &> all.txt
 ```
