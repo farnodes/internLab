@@ -73,4 +73,4 @@ Both output and errors go to all.txt
 
 2>> → Redirect errors (append)
 
-&> → Redirect both output and errors
+&> → Redirect both output and errorsls
